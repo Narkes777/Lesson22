@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Post Form</title>
+    <title>{{ model_name }} Form</title>
 </head>
 <body>
-    <h1>Create new post</h1>
+    <h1>{{ action }} new {{ model_name }}</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
