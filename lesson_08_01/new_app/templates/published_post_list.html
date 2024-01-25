@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Published posts</title>
+</head>
+<body>
+    <h1>Posts</h1>
+    {% for post in post_list %}
+    <p>----</p>
+    <p>{{ post.id }}</p>
+    <p>{{ post.title }}</p>
+    <p>{{ post.content }}</p>
+    {% endfor %}
+</body>
+</html>

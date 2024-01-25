@@ -1,10 +1,48 @@
 from django.shortcuts import render
 from .models import Post, Category
+from .forms import PostForm
 from django.http import HttpResponse, HttpRequest, HttpResponseNotFound
+from django.template.loader import get_template
 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
 # Create your views here.
+
+
+def post_get_form(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        data = request.POST
+        form = PostForm(data)
+        if form.is_valid():
+            form.save()
+            return HttpResponse('Successfully saved new post')
+        else:
+            return HttpResponse('Invalid data')
+    else:
+        form = PostForm()
+        context = {'form': form}
+        return render(request, 'form.html', context)
+
+
+# def post_post_form(request: HttpRequest) -> HttpResponse:
+#     if request.method == 'POST':
+#         data = request.POST
+#         form = PostForm(data)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponse('Successfully saved new post')
+#         else:
+#             return HttpResponse('Invalid data')
+#     else:
+#         return HttpResponse(status=405)
+
+
+def get_published_posts(request: HttpRequest) -> HttpResponse:
+    filtered_status = request.GET.get('status', None)
+    posts = Post.objects.filter(status=filtered_status)
+    template = get_template('published_post_list.html')
+    context = {"post_list": posts}
+    return HttpResponse(template.render(request=request, context=context))
 
 
 def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
