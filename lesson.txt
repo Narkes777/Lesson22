@@ -1,16 +1,15 @@
-1) Создавать модели
-2) Запросы в БД
-3) Создавать новые экземпляры моделей
+view-классы
 
-View
-1) Маршрутизация
-2) View-функции
-3) Делать list, detail, create, update, delete
+DRY - Don't Repeat Yourself
 
+Принципы ООП
+1) Наследование
+2) Инкапсуляция
+3) Полиморфизм
 
-git clone
-
-Практическая работа:
-
-1) Создать view для получения формы клиетом через GET запрос и для принятия от него
-данных по заполненной форме через POST запрос
+SOLID
+1) Single Responsibility Principle
+2) Open/Close Principle
+3) Barbara Liskov Substitution Principle
+4) Interface Segregation Principle
+5) Dependency Inversion Principle

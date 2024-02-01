@@ -6,6 +6,61 @@ from django.template.loader import get_template
 from django.views.generic import UpdateView
 
 from django.shortcuts import get_object_or_404, render, redirect
+from django.views import View
+from django.views.generic.base import ContextMixin, TemplateResponseMixin, TemplateView
+from django.views.generic.detail import SingleObjectMixin, SingleObjectTemplateResponseMixin
+
+# ContextMixin
+# extra_content
+# get_context_data(**kwargs)
+
+def author_list(request: HttpRequest) -> HttpResponse:
+    authors = Author.objects.all() #[]
+    context = {'author_list': authors}
+    return render(request, 'author_list.html', context=context)
+
+
+# class AuthorList(View, ContextMixin, TemplateResponseMixin):
+#     template_name = 'author_list.html'
+#     http_method_names = ['post', 'get']
+#
+#     # 'get'
+#
+#     def get_context_data(self, **kwargs):
+#         return {'author_list': Author.objects.all()}
+#
+#     def get(self, request: HttpRequest, pk) -> HttpResponse:
+#         return self.render_to_response(self.get_context_data())
+
+
+class AuthorList(TemplateView):
+    template_name = 'author_list.html'
+
+    def get_context_data(self, **kwargs):
+        return {'author_list': Author.objects.all()}
+
+
+# model - аттрибут модели, в которой происходит поиск
+# pk_url_kwarg -
+
+class AuthorDetail(View, SingleObjectMixin):
+    model = Author
+    pk_url_kwarg = 'pk'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object() # self.model.objects.get(pk=kwargs[self.pk_url_kwarg])
+        return HttpResponse(self.object)
+
+
+# __call__()
+# as_view()
+# dispatch()
+
+
+
+
+from abc import ABC, abstractmethod
+
 
 # Create your views here.
 
@@ -88,10 +143,7 @@ def category_detail(request: HttpRequest, pk: int) -> HttpResponse:
     #     return HttpResponseNotFound(f'Объект с ключем {pk} не был найден')
 
 
-def author_list(request: HttpRequest) -> HttpResponse:
-    authors = Author.objects.all()
-    context = {'author_list': authors}
-    return render(request, 'author_list.html', context=context)
+
 
 
 def author_detail(request: HttpRequest, pk: int) -> HttpResponse:
@@ -133,7 +185,6 @@ class AuthorUpdate(UpdateView):
     model = Author
     template_name = 'form.html'
     fields = '__all__'
-
 
 
 def author_delete(request: HttpRequest, pk: int) -> HttpResponse:
