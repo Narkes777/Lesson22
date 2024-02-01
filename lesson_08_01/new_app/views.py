@@ -8,11 +8,13 @@ from django.views.generic import UpdateView
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
 from django.views.generic.base import ContextMixin, TemplateResponseMixin, TemplateView
-from django.views.generic.detail import SingleObjectMixin, SingleObjectTemplateResponseMixin
+from django.views.generic.detail import SingleObjectMixin, SingleObjectTemplateResponseMixin, DetailView
+from django.views.generic.list import MultipleObjectMixin, MultipleObjectTemplateResponseMixin, ListView
 
 # ContextMixin
 # extra_content
 # get_context_data(**kwargs)
+
 
 def author_list(request: HttpRequest) -> HttpResponse:
     authors = Author.objects.all() #[]
@@ -27,34 +29,76 @@ def author_list(request: HttpRequest) -> HttpResponse:
 #     # 'get'
 #
 #     def get_context_data(self, **kwargs):
-#         return {'author_list': Author.objects.all()}
+#         context = super().get_context_data(**kwargs)
+#         context['author_list'] = Author.objects.all()
+#         return context
 #
-#     def get(self, request: HttpRequest, pk) -> HttpResponse:
+#     def get(self, request: HttpRequest) -> HttpResponse:
 #         return self.render_to_response(self.get_context_data())
 
 
-class AuthorList(TemplateView):
-    template_name = 'author_list.html'
+# class AuthorList(TemplateView):
+#     template_name = 'new_app/author_list.html'
+#
+#     def get_context_data(self, **kwargs):
+#         return {'author_list': Author.objects.all()}
 
-    def get_context_data(self, **kwargs):
-        return {'author_list': Author.objects.all()}
+# class AuthorList(View, MultipleObjectMixin, MultipleObjectTemplateResponseMixin):
+#     model = Author
+#     template_name = 'author_list.html'
+#     context_object_name = 'author_list'
+#
+#     def get(self, *args, **kwargs):
+#         self.object_list = self.get_queryset()
+#         context = self.get_context_data()
+#         return self.render_to_response(context)
+
+
+class AuthorList(ListView):
+    model = Author
+    context_object_name = 'author_list'
+
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     return queryset.filter(name__icontains='a')
+
+# class AuthorDetail(View, SingleObjectMixin, SingleObjectTemplateResponseMixin):
+#     model = Author
+#     pk_url_kwarg = 'pk'
+#     template_name = 'author_detail.html'
+#     context_object_name = 'author'
+#
+#     def get(self, request: HttpRequest, pk: int) -> HttpResponse:
+#         self.object = self.get_object() # Author.objects.get(pk=pk)
+#         return self.render_to_response(self.get_context_data())
+
+
+class AuthorDetail(DetailView): # DetailView = View + SingleObjectMixin + SingleObjectTemplateResponseMixin + get()
+    model = Author
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs) # context = {'object': self.get_object()}
+    #     context['extra_context'] = "Author random string"
+    #     context['random_string'] = 'dadawdawfrawfaw'
+    #     return context
+
 
 
 # model - аттрибут модели, в которой происходит поиск
 # pk_url_kwarg -
-
-class AuthorDetail(View, SingleObjectMixin):
-    model = Author
-    pk_url_kwarg = 'pk'
-
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object() # self.model.objects.get(pk=kwargs[self.pk_url_kwarg])
-        return HttpResponse(self.object)
-
+#
+# class AuthorDetail(View, SingleObjectMixin):
+#     model = Author # NOT get()
+#     pk_url_kwarg = 'pk' # not get
+#
+#     def get(self, request, *args, **kwargs):
+#         self.object = self.get_object() # self.model.objects.get(pk=kwargs[self.pk_url_kwarg])
+#         return HttpResponse(self.object)
+#
 
 # __call__()
 # as_view()
-# dispatch()
+# dispatch(request, **kwargs)
 
 
 
