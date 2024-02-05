@@ -58,9 +58,16 @@ class AuthorList(ListView):
     model = Author
     context_object_name = 'author_list'
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     return queryset.filter(name__icontains='a')
+    def get_queryset(self):
+        params = self.request.GET
+        queryset = super().get_queryset()
+        return queryset.filter(name=params['name'][0])
+
+
+class CategoryList(ListView):
+    model = Category
+    context_object_name = 'category_list'
+
 
 # class AuthorDetail(View, SingleObjectMixin, SingleObjectTemplateResponseMixin):
 #     model = Author
@@ -75,6 +82,9 @@ class AuthorList(ListView):
 
 class AuthorDetail(DetailView): # DetailView = View + SingleObjectMixin + SingleObjectTemplateResponseMixin + get()
     model = Author
+
+    def get_queryset(self):
+        return self.model.objects.filter(name__icontains='a')
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs) # context = {'object': self.get_object()}
