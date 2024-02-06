@@ -19,7 +19,7 @@ from django.views.generic.list import MultipleObjectMixin, MultipleObjectTemplat
 def author_list(request: HttpRequest) -> HttpResponse:
     authors = Author.objects.all() #[]
     context = {'author_list': authors}
-    return render(request, 'author_list.html', context=context)
+    return render(request, 'new_app/author_list.html', context=context)
 
 
 # class AuthorList(View, ContextMixin, TemplateResponseMixin):
@@ -58,10 +58,7 @@ class AuthorList(ListView):
     model = Author
     context_object_name = 'author_list'
 
-    def get_queryset(self):
-        params = self.request.GET
-        queryset = super().get_queryset()
-        return queryset.filter(name=params['name'][0])
+
 
 
 class CategoryList(ListView):
@@ -83,8 +80,6 @@ class CategoryList(ListView):
 class AuthorDetail(DetailView): # DetailView = View + SingleObjectMixin + SingleObjectTemplateResponseMixin + get()
     model = Author
 
-    def get_queryset(self):
-        return self.model.objects.filter(name__icontains='a')
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs) # context = {'object': self.get_object()}
@@ -110,13 +105,69 @@ class AuthorDetail(DetailView): # DetailView = View + SingleObjectMixin + Single
 # as_view()
 # dispatch(request, **kwargs)
 
+# Формы:
+# 1) Формы, связанные с моделью - save()
+# 2) Формы, не связанные с моделью -
+
+# Factory method
 
 
+from django.forms import modelform_factory
 
-from abc import ABC, abstractmethod
+
+author_form = modelform_factory(Author, fields='__all__')
+
+# FormView
+from django.views.generic.edit import FormMixin, TemplateResponseMixin
+# form_class = author_form
+# initial
+# success_url
+# get_context_data
+# form_valid()
+# form_invalid()
+
+from django.views.generic.edit import ProcessFormView
+from django.urls import reverse_lazy
 
 
-# Create your views here.
+# class CreateFormView(ProcessFormView, FormMixin, TemplateResponseMixin):
+#     form_class = author_form
+#     template_name = 'new_app/author_form.html'
+#     initial = {'name': "Укажите имя автора"}
+#     success_url = reverse_lazy('author_list') # 'authors/'
+#
+#     def form_valid(self, form):
+#         form.save()
+#         return HttpResponse('new author saved')
+#
+#     def form_invalid(self, form):
+#         return HttpResponse('Error when saving new author')
+
+
+from django.views.generic.edit import FormView
+
+
+# class CreateFormView(FormView):
+#     form_class = modelform_factory(Author, fields='__all__')
+#     template_name = 'new_app/author_form.html'
+#     success_url = reverse_lazy('author_list')
+#
+#     def form_valid(self, form):
+#         form.save()
+#         return HttpResponse('new author saved')
+#
+#     def form_invalid(self, form):
+#         return HttpResponse('Error when saving new author')
+
+
+from django.views.generic.edit import CreateView
+
+
+class CreateFormView(CreateView):
+    model = Author
+    template_name = 'new_app/author_form.html'
+    fields = '__all__'
+    success_url = reverse_lazy('author_list')
 
 
 def post_get_form(request: HttpRequest) -> HttpResponse:
