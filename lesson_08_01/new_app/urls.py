@@ -1,15 +1,11 @@
-from .views import AuthorDetail, CreateFormView, post_detail, AuthorList, post_get_form, author_list, author_detail, author_create, AuthorUpdate, author_update, author_delete
+from . import views
 from django.urls import path
 
 urlpatterns = [
-    path('<int:pk>/', AuthorDetail.as_view(), name='post_detail'),
-    path('posts/', AuthorList.as_view(), name='published_posts'),
-    path('posts/create/', post_get_form, name='post_get_form'),
-
-    path('authors/', author_list, name='author_list'),
-    path('authors/<int:pk>/', author_detail, name='author_detail'),
-    path('authors/create/', CreateFormView.as_view(), name='author_create'),
-    path('authors/<int:pk>/update/', AuthorUpdate.as_view(), name='author_update'),
-    path('authors/<int:pk>/delete/', author_delete, name="author_delete")
+    path('posts/', views.PostList.as_view(), name='post_list'),
+    path('posts/<int:pk>', views.PostDetail.as_view(), name='post_detail'),
+    path('posts/create/', views.PostCreate.as_view(), name='post_create'),
+    path('posts/<int:pk>/update/', views.PostUpdate.as_view(), name='post_update'),
+    path('posts/<int:pk>/delete/', views.PostDelete.as_view(), name='post_delete')
 ]
 
