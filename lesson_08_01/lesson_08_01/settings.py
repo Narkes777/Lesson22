@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # local
+    'new_app',
     'ads',
-    'new_app'
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'lesson_08_01.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates', # Jinja2
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -67,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            "string_if_invalid": 'К сожалению эти данные не найдены',
         },
     },
 ]

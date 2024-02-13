@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+</head>
+<body>
+    <h1>About our company</h1>
+    <p>{{ user }}</p>
+    <p>Number: {{ var }}</p> <!-- var.get_param() -->
+    {% csrf_token %} <!-- csrf_token() -->
+    <p>{% for elem in b %}
+    {{ elem }}
+    {% endfor %}</p>
+</body>
+</html>

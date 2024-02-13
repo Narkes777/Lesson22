@@ -38,5 +38,30 @@ class PostDelete(DeleteView):
     template_name = 'new_app/post_form.html'
 
 
-class About(TemplateView):
-    template_name = 'about.html'
+class MainPage(TemplateView):
+    template_name = 'new_app/about.html'
+
+    class Example:
+
+        def __init__(self):
+            self.param = 42
+
+        def get_param(self):
+            return self.param + 100
+
+    def get_context_data(self, **kwargs):
+
+        def func():
+            return 100
+
+        context = super().get_context_data(**kwargs)
+        a = func
+        b = [1, 2, 3, 4]
+        context['var'] = a
+        context['b'] = b
+        # new_context = {'var': a}
+        # context.update(new_context)
+        return context
+
+
+

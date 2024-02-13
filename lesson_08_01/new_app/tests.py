@@ -5,6 +5,16 @@ from django.urls import reverse_lazy
 
 # Create your tests here.
 
+class TestMainPage(TestCase):
+
+    def test_main_page(self):
+        url = ''
+
+        response = self.client.get(url)
+
+        print(response.context)
+
+
 class TestPost(TestCase):
 
     def setUp(self) -> None:
