@@ -11,9 +11,6 @@ class PostList(ListView):
     model = Post
     # context_object_name = 'object_list'
 
-    def get_queryset(self):
-        get_params = self.request.GET
-
 
 class PostDetail(DetailView):
     model = Post
@@ -41,27 +38,16 @@ class PostDelete(DeleteView):
 class MainPage(TemplateView):
     template_name = 'new_app/about.html'
 
-    class Example:
-
-        def __init__(self):
-            self.param = 42
-
-        def get_param(self):
-            return self.param + 100
-
     def get_context_data(self, **kwargs):
-
-        def func():
-            return 100
-
         context = super().get_context_data(**kwargs)
-        a = func
-        b = [1, 2, 3, 4]
-        context['var'] = a
+        b = [1, 1, 1, 2, 3, 3, 3, 4, 4, 5]
+        c = Post.objects.last()
+        condition = 10
         context['b'] = b
+        context['post'] = c
+        context['condition'] = condition
         # new_context = {'var': a}
         # context.update(new_context)
         return context
-
 
 
