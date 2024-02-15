@@ -1,45 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>About</title>
-</head>
-<body>
-    {% if user.is_authenticated %}
-    <h1>Greetings, {{ user.username }}</h1>
-    {% else %}
-    <h1>Greetings, you can login using this <a href="{% url 'admin:login' %}">url</a></h1>
-    {% endif %}
+{% extends 'main/navbar.html' %}
 
-    <h1>About our company</h1>
-    <p>{{ user }}</p>
-    <p>Number: {{ var }}</p> <!-- var.get_param() -->
-    {% csrf_token %} <!-- csrf_token() -->
+{% block title %}Главная страница{% endblock %}
 
-    {% for elem in b %}
-    {% ifchanged %}
-    <p>{{ elem }}</p>
-    {% endifchanged %}
-    {% endfor %}
+{% block content %}
+<h1>Главная страница</h1>
+<p>Вы находитесь на главной странице</p>
+{% endblock %}
 
-    {% with pk=post.pk %} <!-- pk = post.pk -->
-    <p>Pk: {{ pk }}</p>
-    {% endwith %}
+{% block footer %}
+<p>This is footer!</p>
+{% endblock %}
 
-    <a href="{% url 'post_detail' pk=post.pk %}"><button>Список постов</button></a>
 
-    {% if condition < 10 %}
-    <p>TRUE IT IS LESS THEN 10</p>
-    {% elif condition == 10 %}
-    <p>TRUE CONDITION IS 10</p>
-    {% else %}
-    <p>LIE</p>
-    {% endif %}
 
-    <p>{{ post.created_at|date:'H:i:s' }}</p>
-    {% with upper_string='UPPER STRING' %}
-    <p>{{ upper_string }}</p>
-    <p>{{ upper_string|lower }}</p>
-    {% endwith %}
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <p>Наша компания была основана в ...</p>-->
+<!--    {% if user.is_authenticated %}-->
+<!--    <h1>Greetings, {{ user.username }}</h1>-->
+<!--    {% else %}-->
+<!--    <h1>Greetings, you can login using this <a href="{% url 'admin:login' %}">url</a></h1> &lt;!&ndash; url('admin:login') &ndash;&gt;-->
+<!--    {% endif %}-->
+
+<!--    <h1>About our company</h1>-->
+<!--    <p>{{ user }}</p>-->
+<!--    <p>Number: {{ var }}</p> &lt;!&ndash; var.get_param() &ndash;&gt;-->
+<!--    {% csrf_token %} &lt;!&ndash; csrf_token() &ndash;&gt;-->
+
+<!--    {% for elem in b %}-->
+<!--    {% ifchanged %}-->
+<!--    <p>{{ elem }}</p>-->
+<!--    {% endifchanged %}-->
+<!--    {% endfor %}-->
+
+<!--    {% with pk=post.pk %} &lt;!&ndash; pk = post.pk &ndash;&gt;-->
+<!--    <p>Pk: {{ pk }}</p>-->
+<!--    {% endwith %}-->
+
+
+
+<!--    {% if condition < 10 %}-->
+<!--    <p>TRUE IT IS LESS THEN 10</p>-->
+<!--    {% elif condition == 10 %}-->
+<!--    <p>TRUE CONDITION IS 10</p>-->
+<!--    {% else %}-->
+<!--    <p>LIE</p>-->
+<!--    {% endif %}-->
+
+<!--    <p>{{ post.created_at|date:'U' }}</p>-->
+<!--    &lt;!&ndash;-->
+<!--    d - день месяца (01.02)-->
+<!--    j - день месяца без нулей (1.02)-->
+<!--    D - день недели в тексте-->
+<!--    l - день недели в тексе (полный)-->
+<!--    F - месяц в тексе-->
+<!--    m - месяц цифрой-->
+<!--    M - месяц тестом сокращенный-->
+<!--    L - високосный год-->
+<!--    Y - год четырьмя цифрами-->
+<!--    y - год двумя цифрами-->
+<!--    H - часы в 24 формате-->
+<!--    h - часы в 12 формате-->
+<!--    A - возможность указать AM и PM-->
+<!--    e - временная зона-->
+<!--    s - секунды-->
+<!--    i - минуты-->
+<!--     &ndash;&gt;-->
+<!--    <p>{{ post.created_at|timesince }}</p>-->
+<!--    {% with upper_string='UPPER STRING' %}-->
+<!--    <p>{{ upper_string }}</p>-->
+<!--    <p>{{ upper_string|lower }}</p>-->
+<!--    {% endwith %}-->
+
+<!--    &lt;!&ndash; Мне нужно создать кнопку на основе поступившего из контекста списка с True или False значениями. В случае если True, кнопка должна иметь надпись "Да" &ndash;&gt;-->
+<!--    {% for elem in boolean_list %}-->
+<!--    <button>{{ elem|yesno:"ДА,НЕТ,НЕ ЗНАЮ" }}</button>-->
+<!--    <p>{{ elem|default:"Значения нет" }}</p>-->
+<!--    {% endfor %}-->
+<!--    {{ number|floatformat:3 }}-->
+<!--    {{ b|unordered_list }}-->

@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Post Detail</title>
-</head>
-<body>
+{% extends "new_app/post_main.html" %}
+
+{% block content %}
     <h1>Post Detail</h1>
     <p>{{ object.title }}</p>
-    <p>{{ object.email }}</p>
-    <p>{{ object.bio }}</p>
-</body>
-</html>
+    <p>---------</p>
+    <p><a href="{% url 'post_update' pk=post.pk %}">Обновить</a></p>
+    <p><a href="{% url 'post_delete' pk=post.pk %}">Удалить</a></p>
+{% endblock %}

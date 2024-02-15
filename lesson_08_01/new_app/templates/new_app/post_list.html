@@ -1,14 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Post List</title>
-</head>
-<body>
+{% extends 'new_app/post_main.html' %}
+
+{% block title %}Список постов{% endblock %}
+
+{% block content %}
     <h1>Post List</h1>
     {% for post in object_list %}
-    <p>{{ post.title }}</p>
+    <p><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></p> <!-- url('post_detail', pk=post.pk) -->
     <p>-----</p>
     {% endfor %}
-</body>
-</html>
+{% endblock %}
+
+<!--
+ page.object_list - список всех записей, входящих в состав текущей страницы
+ page.number - номер этой конкретной страницы
+ page.paginator - возвращает класс пагинатора
+ page.has_next - метод, возвращающий True если есть еще страница дальше
+ page.has_previous - метод, возвращающий True, если есть предыдущая страница
+ -->
+
+{% block footer %}
+<p>This is another footer!</p>
+{{ block.super }}
+{% endblock %}
