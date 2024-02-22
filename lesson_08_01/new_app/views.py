@@ -6,23 +6,29 @@ from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.core.paginator import Paginator
 
-from .models import Post
+from .models import Post, Author
+
+
+class AuthorList(ListView):
+    model = Author
+    paginate_by = 2
 
 
 class PostList(ListView):
     model = Post
-    # context_object_name = 'object_list'
+    paginate_by = 2
+    paginate_orphans = 1
 
 
 def post_list(request):
     posts = Post.objects.all()
-    paginator = Paginator(posts, 2)
+    paginator = Paginator(posts, 1, orphans=1)
     if 'page' in request.GET:
         page_num = request.GET['page']
     else:
         page_num = 1
     page = paginator.get_page(page_num)
-    context = {"object_list": page.object_list, "page": page}
+    context = {"object_list": page.object_list, "page_obj": page}
     return render(request, "new_app/post_list.html", context)
 
 
