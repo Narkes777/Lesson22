@@ -1,8 +1,14 @@
-from django.forms import ModelForm, modelform_factory
+from django.forms import ModelForm, modelform_factory, Form, modelformset_factory
 from django import forms
 from django.contrib.auth.models import User
 
+
 from .models import Author, Post
+
+AuthorFormset = modelformset_factory(Author, fields='__all___')
+
+class SearchForm(forms.Form):
+    q = forms.CharField(max_length=20, label='Поиск по словам')
 
 
 class UserRegistrationForm(forms.ModelForm):
