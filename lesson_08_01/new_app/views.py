@@ -1,17 +1,47 @@
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.views.generic.base import TemplateView
 from django.urls import reverse_lazy
 from django.shortcuts import render
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 
-from .models import Post, Author
+from .models import Post, Author, Category
+from .forms import AuthorForm, PostForm, UserRegistrationForm
+
+
+
+
+class UserRegisterView(FormView):
+    template_name = 'new_app/author_form.html'
+    form_class = UserRegistrationForm
+
+    def post(self, request, *args, **kwargs):
+        data = dict(request.POST)
+        pass1 = data.pop('password1') # None
+        pass2 = data.pop('password2') # None
+        form = UserRegistrationForm(request.POST)
+        if pass1 != pass2:
+            return self.form_invalid(form)
+        else:
+            if form.is_valid():
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
+
+    def form_valid(self, form):
+        return HttpResponse('New user has been created')
 
 
 class AuthorList(ListView):
     model = Author
     paginate_by = 2
+
+
+class AuthorCreate(CreateView):
+    form_class = AuthorForm
+    model = Author
 
 
 class PostList(ListView):
@@ -39,7 +69,7 @@ class PostDetail(DetailView):
 
 class PostCreate(CreateView):
     model = Post
-    fields = '__all__'
+    form_class = PostForm
     success_url = reverse_lazy('post_list')
 
 
@@ -57,6 +87,9 @@ class PostDelete(DeleteView):
 
 class MainPage(TemplateView):
     template_name = 'new_app/about.html'
+
+
+
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)
